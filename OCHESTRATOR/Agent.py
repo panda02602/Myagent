@@ -19,9 +19,10 @@ class Agent:
             response = self.intelligence_layer.process(self.context_layer.get_context())
             message = response.choices[0].message
 
-            self.context_layer.extend([message])
+            if message.tool_calls:
+                # Append assistant's tool call request to context
+                self.context_layer.extend([message])
 
-            if message.tool_calls: 
                 for tool in message.tool_calls:
                     tool_result = call_tool(tool, self.context_layer.get_context())
 
@@ -33,10 +34,29 @@ class Agent:
                             "content": str(tool_result)
                         }
                     ])
+                # Loop again to get the final response after tool execution
 
+            elif hasattr(message, "reasoning_content") and message.reasoning_content:
+                # Reasoning message — append and continue
+                reasoning_text = message.reasoning_content
+                self.context_layer.extend([
+                    {
+                        "role": "assistant",
+                        "content": reasoning_text
+                    }
+                ])
+                response_text = reasoning_text
+                break
 
             else:
-                response_text = message.content 
+                # Normal text message — append to context and return
+                response_text = message.content or ""
+                self.context_layer.extend([
+                    {
+                        "role": "assistant",
+                        "content": response_text
+                    }
+                ])
                 break
 
         return response_text

@@ -10,7 +10,7 @@ class ContextLayer:
 
     def get_sys_prompt(self, _sys_PROMPT):
         self._sys_PROMPT = _sys_PROMPT
-        self._context[0] = {'role': 'system', 'content': _sys_PROMPT}  # ✅ Fixed: removed extra [] wrapping
+        self._context[0] = {'role': 'system', 'content': _sys_PROMPT} 
 
     def add_assistant(self, response_text):
         self._context.append({'role': 'assistant', 'content': response_text})

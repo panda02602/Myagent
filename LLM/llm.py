@@ -1,8 +1,9 @@
 from openai import OpenAI
 from TOOLS.tools import TOOLS
-from dotenv import load_dotenv
+from dotenv import load_dotenv,find_dotenv
 import os
-load_dotenv(override=True)
+
+load_dotenv(find_dotenv(), override=True)
 client = OpenAI(
     api_key = os.getenv("API_KEY"),
     base_url = os.getenv("BASE_URL")
