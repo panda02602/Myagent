@@ -17,12 +17,11 @@ class Agent:
 
         while True:
             response = self.intelligence_layer.process(self.context_layer.get_context())
-            message = response.choices[0].message  # ✅ chat.completions structure
+            message = response.choices[0].message
 
-            # Append assistant message to context
             self.context_layer.extend([message])
 
-            if message.tool_calls:  # ✅ Tool call check for chat.completions
+            if message.tool_calls: 
                 for tool in message.tool_calls:
                     tool_result = call_tool(tool, self.context_layer.get_context())
 
@@ -34,10 +33,10 @@ class Agent:
                             "content": str(tool_result)
                         }
                     ])
-                # Loop again to get final response after tool use
+
 
             else:
-                response_text = message.content  # ✅ Plain text response
+                response_text = message.content 
                 break
 
         return response_text
