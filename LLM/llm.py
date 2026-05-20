@@ -1,5 +1,5 @@
 from openai import OpenAI
-from TOOLS.tools import TOOLS
+from TOOLS.tools import TOOL_SET
 from dotenv import load_dotenv,find_dotenv
 import os
 
@@ -14,6 +14,6 @@ def llm(context:list):
     responses = client.chat.completions.create(
         model = "llama-3.1-8b-instant",
         messages = context,
-        tools = TOOLS
+        tools = TOOL_SET
     )
     return responses

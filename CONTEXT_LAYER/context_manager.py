@@ -1,5 +1,4 @@
 from openai.types.responses.response_output_item import ResponseOutputItem
-
 class ContextLayer:
     def __init__(self) -> None:
         self._sys_PROMPT = ""
